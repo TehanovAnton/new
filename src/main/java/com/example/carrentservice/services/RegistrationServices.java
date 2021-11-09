@@ -1,13 +1,13 @@
 package com.example.carrentservice.services;
 
-import com.example.carrentservice.models.Users;
+import com.example.carrentservice.models.User;
 import com.example.carrentservice.repository.UserRepository;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class RegistrationServices
 {
-    public void Register(UserRepository repository, Users user)
+    public void Register(UserRepository repository, User user)
     {
 //        add validation
 

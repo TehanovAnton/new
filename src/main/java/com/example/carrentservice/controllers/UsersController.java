@@ -1,6 +1,6 @@
 package com.example.carrentservice.controllers;
 
-import com.example.carrentservice.models.Users;
+import com.example.carrentservice.models.User;
 import com.example.carrentservice.repository.UserRepository;
 import com.example.carrentservice.services.RegistrationServices;
 import com.example.carrentservice.services.UserControllerServices;
@@ -40,7 +40,7 @@ public class UsersController
     }
 
     @PostMapping(value = { "/users/create" })
-    public ModelAndView Create(Model model, @ModelAttribute("user") Users user)
+    public ModelAndView Create(Model model, @ModelAttribute("user") User user)
     {
         registrationServices.Register(userRepository, user);
         return usersControllerService.ReturnView("UsersShow");

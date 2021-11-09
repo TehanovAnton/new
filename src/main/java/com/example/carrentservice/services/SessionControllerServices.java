@@ -1,7 +1,7 @@
 package com.example.carrentservice.services;
 
 import com.example.carrentservice.models.Rents;
-import com.example.carrentservice.models.Users;
+import com.example.carrentservice.models.User;
 import com.example.carrentservice.repository.RentRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.ui.Model;
@@ -14,12 +14,12 @@ public class SessionControllerServices {
         return modelAndView;
     }
 
-    public Boolean CheckUser(Users user) {
+    public Boolean CheckUser(User user) {
         return true;
     }
 
     public void AddNewUserAttr(Model model) {
-        Users user = new Users();
+        User user = new User();
         model.addAttribute("user", user);
     }
 }

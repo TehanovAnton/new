@@ -1,6 +1,6 @@
 package com.example.carrentservice.services;
 
-import com.example.carrentservice.models.Users;
+import com.example.carrentservice.models.User;
 import lombok.NoArgsConstructor;
 import org.dom4j.rule.Mode;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ public class UserControllerServices {
     }
 
     public void AddNewUserAttr(Model model) {
-        Users user = new Users();
+        User user = new User();
         model.addAttribute("user", user);
     }
 }

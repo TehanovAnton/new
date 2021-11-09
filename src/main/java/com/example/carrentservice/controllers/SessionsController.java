@@ -1,7 +1,7 @@
 package com.example.carrentservice.controllers;
 
 import com.example.carrentservice.models.Rents;
-import com.example.carrentservice.models.Users;
+import com.example.carrentservice.models.User;
 import com.example.carrentservice.services.RentsControllerServices;
 import com.example.carrentservice.services.SessionControllerServices;
 import org.springframework.ui.Model;
@@ -26,7 +26,7 @@ public class SessionsController {
     }
 
     @PostMapping(value = { "/users/create" })
-    public ModelAndView Create(Model model, @ModelAttribute("user") Users user)
+    public ModelAndView Create(Model model, @ModelAttribute("user") User user)
     {
         sessionControllerServices.CheckUser(user);
         return sessionControllerServices.ReturnView("Home");

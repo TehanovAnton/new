@@ -9,17 +9,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Main implements IMain {
+public class Main {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(WebConfig.class);
-        IMain im = context.getBean(IMain.class);
+        Main m = context.getBean(Main.class);
+        Main n = new Main();
 
-        Main m = new Main();
-        IMain i = ((IMain)m);
-
-        im.printName("anton");
-        i.printName("tehanov");
+        m.printName("anton");
+        n.printName("tehanov");
     }
 
     @MyAnnotation
