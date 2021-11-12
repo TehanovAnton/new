@@ -2,8 +2,7 @@ package com.example.carrentservice.models;
 
 import lombok.NoArgsConstructor;
 
-//@NoArgsConstructor
+@NoArgsConstructor
 
-//
-//public class Admins extends Users {
-//}
+public class Admins extends User {
+}

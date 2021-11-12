@@ -1,34 +1,57 @@
 package com.example.carrentservice.controllers;
 
-import com.example.carrentservice.models.Rents;
-import com.example.carrentservice.models.User;
-import com.example.carrentservice.services.RentsControllerServices;
+import com.example.carrentservice.models.SignInSet;
+import com.example.carrentservice.repository.UserRepository;
 import com.example.carrentservice.services.SessionControllerServices;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Controller
+@RequestMapping
 public class SessionsController {
+
+    @Autowired
+    private UserRepository userRepository;
+
     private static SessionControllerServices sessionControllerServices;
 
-    static
-    {
+    static {
         sessionControllerServices = new SessionControllerServices();
     }
 
-    @GetMapping(value = { "/users/new" })
-    public ModelAndView New(Model model)
-    {
-        sessionControllerServices.AddNewUserAttr(model);
+    @GetMapping("/user/sign_in")
+    public ModelAndView SignIn(Model model) {
+        sessionControllerServices.AddViewAttr(model, "signInSet", new SignInSet());
         return sessionControllerServices.ReturnView("SignIn");
     }
 
-    @PostMapping(value = { "/users/create" })
-    public ModelAndView Create(Model model, @ModelAttribute("user") User user)
-    {
-        sessionControllerServices.CheckUser(user);
-        return sessionControllerServices.ReturnView("Home");
+    @PostMapping("/user/session/create")
+    public ModelAndView CreateSession(@ModelAttribute("signInSet") SignInSet signInSet, HttpServletRequest request) {
+        ModelAndView modelAndView;
+        if (sessionControllerServices.CheckUserBySignInSet(signInSet, userRepository)) {
+            sessionControllerServices.CreateSession(request);
+            modelAndView = sessionControllerServices.ReturnView("Home");
+        }
+        else
+            modelAndView = sessionControllerServices.ReturnView("SignIn");
+
+        return modelAndView;
+    }
+
+    @PostMapping("/user/sign_out")
+    public ModelAndView SignOut(Model model, HttpServletRequest request) {
+        sessionControllerServices.DestroySession(request);
+        sessionControllerServices.AddViewAttr(model, "signInSet", new SignInSet());
+        return sessionControllerServices.ReturnView("SignIn");
     }
 }

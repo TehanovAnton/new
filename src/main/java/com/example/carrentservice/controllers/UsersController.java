@@ -32,14 +32,14 @@ public class UsersController
         usersControllerService = new UserControllerServices();
     }
 
-    @GetMapping(value = { "/users/new" })
+    @GetMapping(value = { "/user/new" })
     public ModelAndView New(Model model)
     {
         usersControllerService.AddNewUserAttr(model);
         return usersControllerService.ReturnView("UsersNew");
     }
 
-    @PostMapping(value = { "/users/create" })
+    @PostMapping(value = { "/user/create" })
     public ModelAndView Create(Model model, @ModelAttribute("user") User user)
     {
         registrationServices.Register(userRepository, user);
