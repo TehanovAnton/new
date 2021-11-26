@@ -1,11 +1,15 @@
 package com.example.carrentservice.models;
 
+import com.example.carrentservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -19,11 +23,16 @@ public class User
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer Id;
+    @Getter
+    private Integer id;
 
     @Getter
     @Setter
     private String name;
+
+    @Getter
+    @Setter
+    private String lastName;
 
     @Getter
     @Setter
@@ -32,4 +41,11 @@ public class User
     @Getter
     @Setter
     private String password;
+
+    @Getter
+    @Setter
+    private String role;
+
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Rent.class, cascade = CascadeType.ALL, mappedBy = "user")
+    public List<Rent> rents;
 }

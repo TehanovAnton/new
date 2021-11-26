@@ -1,7 +1,10 @@
 package com.example.carrentservice.repository;
 
-import com.example.carrentservice.models.Cars;
+import com.example.carrentservice.models.Car;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CarRepository extends CrudRepository<Cars, Long> {
+import java.util.List;
+
+public interface CarRepository extends CrudRepository<Car, Long> {
+    List<Car> findAllByBrand(String brand);
 }

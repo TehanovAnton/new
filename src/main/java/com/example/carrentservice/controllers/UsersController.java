@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 @Slf4j
 @Controller
@@ -40,9 +43,8 @@ public class UsersController
     }
 
     @PostMapping(value = { "/user/create" })
-    public ModelAndView Create(Model model, @ModelAttribute("user") User user)
-    {
+    public void Create(Model model, @ModelAttribute("user") User user, HttpServletResponse response) throws IOException {
         registrationServices.Register(userRepository, user);
-        return usersControllerService.ReturnView("UsersShow");
+        response.sendRedirect("/rent/new");
     }
 }

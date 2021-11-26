@@ -1,8 +1,7 @@
 package com.example.carrentservice.repository;
 
-import com.example.carrentservice.models.Rents;
-import com.example.carrentservice.models.User;
+import com.example.carrentservice.models.Rent;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RentRepository extends CrudRepository<Rents, Long> {
+public interface RentRepository extends CrudRepository<Rent, Long> {
 }

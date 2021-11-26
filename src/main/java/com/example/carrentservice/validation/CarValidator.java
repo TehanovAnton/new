@@ -1,14 +1,14 @@
 package com.example.carrentservice.validation;
 
-import com.example.carrentservice.models.Cars;
+import com.example.carrentservice.models.Car;
 
 public class CarValidator {
 
-    public static Boolean Validate(Cars car) {
-        return CheckCarMileage(car.getCarMileage());
-    }
-
-    private static Boolean  CheckCarMileage(Integer carMileage) {
-        return carMileage >= 0;
-    }
+//    public static Boolean Validate(Car car) {
+//        return CheckCarMileage(car.getCarMileage());
+//    }
+//
+//    private static Boolean  CheckCarMileage(Integer carMileage) {
+//        return carMileage >= 0;
+//    }
 }
