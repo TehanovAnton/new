@@ -1,6 +1,7 @@
 package com.example.carrentservice.controllers;
 
 import com.example.carrentservice.models.Customer;
+import com.example.carrentservice.models.Role;
 import com.example.carrentservice.services.CustomerService;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @RestController
 @RequestMapping
@@ -27,8 +31,17 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/registration")
-    public ModelAndView registration(Customer customer) {
+    public ModelAndView registration(Customer customer, Model model) {
+        Customer customerFromDb = customerService.findCustomerByFullName(customer.getFullName());
+
+        if (customerFromDb != null) {
+            return new ModelAndView("redirect:/registration");
+        }
+
+        customer.setActive(true);
+        customer.setRoles(Collections.singleton(Role.USER));
         customerService.save(customer);
+
         return new ModelAndView("redirect:/");
     }
 }

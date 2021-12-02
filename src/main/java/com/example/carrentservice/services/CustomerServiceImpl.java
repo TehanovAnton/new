@@ -21,6 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer findCustomerByFullName(String fullName) { return customerDAO.findCustomerByFullName(fullName); }
+
+    @Override
     public List<Customer> findAll() {
         return customerDAO.findAll();
     }

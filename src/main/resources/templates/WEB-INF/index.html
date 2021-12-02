@@ -4,6 +4,9 @@
 <head th:replace="layout :: head"></head>
 
 <body>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
     <nav th:replace="layout :: nav"></nav>
     <div class="container">
         <header class="jumbotron hero-spacer">

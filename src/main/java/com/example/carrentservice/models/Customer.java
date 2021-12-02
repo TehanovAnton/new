@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -21,9 +22,9 @@ public class Customer implements Serializable {
     }
 
     public Customer(String login, String password, String fullName, String role, BigDecimal totalPrice, BigDecimal cardNumber, BigDecimal cvv, boolean isPaid, int borrowedCars, List<Car> cars) {
+        this.fullName = fullName;
         this.login = login;
         this.password = password;
-        this.fullName = fullName;
         this.role = role;
         this.totalPrice = totalPrice;
         this.cardNumber = cardNumber;
@@ -46,23 +47,35 @@ public class Customer implements Serializable {
     @Setter
     private String login;
 
-    @Size(min = 5, max = 60)
-    @Column(name = "password", length = 60)
-    @Getter
-    @Setter
-    private String password;
-
     @Size(min = 2, max = 50)
     @Column(name = "fullName", length = 50)
     @Getter
     @Setter
     private String fullName;
 
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 60)
+    @Column(name = "password", length = 60)
+    @Getter
+    @Setter
+    private String password;
+
+    @Getter
+    @Setter
+    @Column(name = "active")
+    private boolean active;
+
+    @Size(min = 2, max = 50)
     @Column(name = "role", length = 50)
     @Getter
     @Setter
     private String role;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id"))
+    @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
+    private Set<Role> roles;
 
     @Digits(integer = 10, fraction = 2)
     @Column(name = "total_price")

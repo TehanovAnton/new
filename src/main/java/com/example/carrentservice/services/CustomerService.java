@@ -9,5 +9,7 @@ public interface CustomerService {
 
     Customer findById(Long id);
 
+    Customer findCustomerByFullName(String fullName);
+
     void save(Customer customer);
 }
