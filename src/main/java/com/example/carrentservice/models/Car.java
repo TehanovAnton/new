@@ -1,48 +1,59 @@
 package com.example.carrentservice.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Cars")
-@NoArgsConstructor
-public class Car {
+@Table(name = "car")
+public class Car implements Serializable {
+    private static final long serialVersionUID = 7034352443015914334L;
 
-    public Car(String brand, Integer rentPrice) {
-        this.brand = brand;
-        this.rentPrice = rentPrice;
-        this.rentState = "free";
+    public Car() {
+        super();
     }
 
     @Id
-    @Getter
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
     @Getter
     @Setter
-    @Column(nullable = false)
-    private String brand;
+    private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "name", length = 100)
     @Getter
     @Setter
-    @Column(nullable = false)
-    // rent price per day ($)
-    private Integer rentPrice;
+    private String name;
 
+    @Size(min = 20, max = 300)
+    @Column(name = "description", length = 300)
     @Getter
     @Setter
-    @Column(columnDefinition = "nvarchar(255) not null default 'free'")
-    private String rentState;
+    private String description;
 
-
-    private Integer rent_id;
-
+    @Digits(integer = 5, fraction = 2)
+    @Column(name = "price")
     @Getter
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rent_id", nullable = false, insertable = false, updatable = false)
-    private Rent rent;
+    @Setter
+    private BigDecimal price;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "cars")
+    @Getter
+    @Setter
+    private List<Customer> customers = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
+    @Getter
+    @Setter
+    private List<BorrowedDate> borrowedDates = new ArrayList<>();
 }

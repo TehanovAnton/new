@@ -1,7 +1,5 @@
 package com.example.carrentservice.validation;
 
-import com.example.carrentservice.models.Car;
-
 public class CarValidator {
 
 //    public static Boolean Validate(Car car) {
