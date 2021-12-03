@@ -70,7 +70,8 @@
                             <a th:href="@{/}"><input type="button" class="btn btn-danger" value="Cancel" /></a>
                         </div>
                         <div class="col-sm-6">
-                            <form th:object="${customer}" method="post">
+                            <form th:action="@{bookResume}" th:object="${customer}" method="post">
+                                <input type="hidden" name="car_id" th:value="${carById.id}">
                                 <button class="btn btn-success" type="submit">Finish</button>
                             </form>
                         </div>

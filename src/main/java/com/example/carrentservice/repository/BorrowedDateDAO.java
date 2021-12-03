@@ -15,6 +15,8 @@ public interface BorrowedDateDAO extends JpaRepository<BorrowedDate, Long> {
     BorrowedDate findByCarId(Long id);
     List<BorrowedDate> findAll();
 
+    List<BorrowedDate> findAllByCustomerId(Long id);
+
     @Query("select b.car.id " +
             "from BorrowedDate as b "+
             "where :startDate not between b.startDate and b.endDate "+

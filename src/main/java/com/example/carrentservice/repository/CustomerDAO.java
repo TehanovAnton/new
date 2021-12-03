@@ -15,4 +15,6 @@ public interface CustomerDAO extends JpaRepository<Customer, Long> {
     Optional<Customer> findById(Long id);
 
     Customer findCustomerByFullName(String fullName);
+
+    Customer findCustomerByActive(boolean active);
 }

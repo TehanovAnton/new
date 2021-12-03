@@ -24,15 +24,17 @@
         <div class="container">
             <h3>Check availability:</h3>
 
-            <form name="bookPartOneForm" onsubmit="return validateForm()">
+            <form th:action="@{/bookPartOne}" name="bookPartOneForm" onsubmit="return validateForm()">
                 <div class="row">
-                    <input type="hidden" class="form-control" name="car_id" th:value="${carById.id}">
+                    <input type="hidden" name="car_id" th:value="${carById.id}">
                     <div class="col-sm-4">
-                        <input type="date" class="form-control" name="start_date" placeholder="Pick start date"><br><br>
+                        <input type="date" class="form-control" name="start_date"
+                               th:value="${start_date_formatted}" placeholder="Pick start date"><br><br>
                         <h4 id="startDateValidation" class="bg-danger"></h4>
                     </div>
                     <div class="col-sm-4">
-                        <input type="date" class="form-control" name="end_date" placeholder="Pick end date"><br><br>
+                        <input type="date" class="form-control" name="end_date"
+                               th:value="${end_date_formatted}" placeholder="Pick end date"><br><br>
                         <h4 id="endDateValidation" class="bg-danger"></h4>
                     </div>
                     <div class="col-sm-4">
@@ -42,7 +44,11 @@
             </form>
             <!-- If list 'availableCarById' is NOT empty car is available -->
             <div id="checkAvailability">
-                <form method="post">
+                <form th:action="@{/bookPartOne}" method="post">
+                    <input type="hidden" name="car_id" th:value="${carById.id}">
+                    <input type="hidden" name="start_date" th:value="${start_date}">
+                    <input type="hidden" name="end_date" th:value="${end_date}">
+
                     <div th:if="${not #lists.isEmpty(availableCarById)}">
                         <h4>Great, chosen car is available in this period.</h4>
                         <button class="btn btn-success" type="submit">Next</button>

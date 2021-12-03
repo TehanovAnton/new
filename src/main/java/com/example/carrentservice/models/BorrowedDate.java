@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Entity
@@ -52,4 +53,14 @@ public class BorrowedDate implements Serializable {
     @Getter
     @Setter
     private Customer customer;
+
+    public String startDateFormatted() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(startDate.getTime());
+    }
+
+    public String endDateFormatted() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(endDate.getTime());
+    }
 }
