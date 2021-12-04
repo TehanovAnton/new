@@ -42,6 +42,13 @@ public class BorrowedDateService{
     
     public List<BorrowedDate> findAllByCustomerId(Long id) { return borrowedDateDAO.findAllByCustomerId(id); }
 
+    public void deleteById(Long id) {
+        BorrowedDate borrowedDate = borrowedDateDAO.findById(id).get();
+        if (borrowedDate != null) {
+            borrowedDateDAO.deleteById(borrowedDate.getId());
+        }
+    }
+
     
     public void save(BorrowedDate borrowedDate) {
         borrowedDateDAO.save(borrowedDate);

@@ -24,7 +24,9 @@
                     <p th:text="${d.date.startDateFormatted()}"></p>
                     <p th:text="${d.date.endDateFormatted()}"></p>
                     <p>
-<!--                        <a href="#" class="btn btn-primary" th:href="@{/bookPartOne(car_id=${p.id})}">Book Now!</a>-->
+                        <form th:action="@{/customer/book(book_id=${d.date.id})}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
 <!--                        <a href="#" class="btn btn-default" th:href="@{/carDetail(car_id=${p.id})}">More Info</a>-->
                     </p>
                 </div>

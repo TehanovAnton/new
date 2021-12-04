@@ -12,7 +12,9 @@ import java.util.List;
 @Repository
 public interface BorrowedDateDAO extends JpaRepository<BorrowedDate, Long> {
     BorrowedDate findByCustomerId(Long id);
+
     BorrowedDate findByCarId(Long id);
+
     List<BorrowedDate> findAll();
 
     List<BorrowedDate> findAllByCustomerId(Long id);
@@ -46,5 +48,5 @@ public interface BorrowedDateDAO extends JpaRepository<BorrowedDate, Long> {
                                     @Param("endDate") Calendar endDate,
                                     @Param("carId") Long id);
 
-
+    void deleteById(Long id);
 }

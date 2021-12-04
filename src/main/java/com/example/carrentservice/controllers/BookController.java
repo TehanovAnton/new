@@ -51,6 +51,13 @@ public class BookController {
         return new ModelAndView("ShowBooks");
     }
 
+    @PostMapping("/customer/book{book_id}")
+    public ModelAndView delete(Model model,
+                               @RequestParam("book_id") Long bookId) {
+        borrowedDateService.deleteById(bookId);
+        return new ModelAndView("redirect:/customer/books");
+    }
+
     private List<ShowBorrowedDate> showCustomerBooks(List<BorrowedDate> customerBorrowedDates, List<Car> customerBorrowedCars) {
         List<ShowBorrowedDate> dates = new ArrayList<ShowBorrowedDate>();
         for (int i = 0; i < customerBorrowedCars.size(); i++) {
