@@ -32,7 +32,7 @@ public class MailService {
     public void sendMail(Customer customer, BorrowedDate borrowedDate, Car car) {
         try {
             final Email email = DefaultEmail.builder().from(new InternetAddress("springcarrental@interia.pl"))
-                    .to(Lists.newArrayList(new InternetAddress(customer.getLogin())))
+                    .to(Lists.newArrayList(new InternetAddress(customer.getEmail())))
                     .subject("Resume of your orders in Car Rental")
                     .body("Dear, " + customer.getFullName() + "\n\nThank You for borrowing our car."
                             + "\nHere is resume of your order." + "\nChosen car: " + car.getName() + ", "

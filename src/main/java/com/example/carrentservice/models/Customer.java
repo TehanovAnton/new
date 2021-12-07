@@ -1,11 +1,11 @@
 package com.example.carrentservice.models;
 
+import com.example.carrentservice.validation.UniqueEmail;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public class Customer implements Serializable {
         super();
     }
 
-    public Customer(String login, String password, String fullName, String role, BigDecimal totalPrice, BigDecimal cardNumber, BigDecimal cvv, boolean isPaid, int borrowedCars, List<Car> cars) {
+    public Customer(String email, String password, String fullName, String role, BigDecimal totalPrice, BigDecimal cardNumber, BigDecimal cvv, boolean isPaid, int borrowedCars, List<Car> cars) {
         this.fullName = fullName;
-        this.login = login;
+        this.email = email;
         this.password = password;
         this.role = role;
         this.totalPrice = totalPrice;
@@ -35,34 +35,33 @@ public class Customer implements Serializable {
     }
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue( strategy = GenerationType.AUTO)
     @Column(name = "customer_id")
-    @Getter
-    @Setter
     private Long id;
 
-    @Size(min = 2, max = 50)
-    @Column(name = "login", length = 50)
     @Getter
     @Setter
-    private String login;
-
-    @Size(min = 2, max = 50)
-    @Column(name = "fullName", length = 50)
-    @Getter
-    @Setter
+    @Column(name = "fullName", length = 30)
+    @NotEmpty(message = "fullName should not be empty")
+    @Size(min = 2, max = 30, message = "fullName length must be between 2 and 30 characters")
     private String fullName;
 
-    @Size(min = 5, max = 60)
-    @Column(name = "password", length = 60)
     @Getter
     @Setter
-    private String password;
+    @Column(name = "email", length = 50)
+    @NotEmpty(message = "email should not be empty")
+    @Email(message = "email should be valid")
+    @UniqueEmail
+    private String email;
 
     @Getter
     @Setter
-    @Column(name = "active")
-    private boolean active;
+    @NotEmpty(message = "password should not be empty")
+    @Size(min = 5, max = 16)
+    @Column(name = "password", length = 16)
+    private String password;
 
     @Size(min = 2, max = 50)
     @Column(name = "role", length = 50)
@@ -70,43 +69,49 @@ public class Customer implements Serializable {
     @Setter
     private String role;
 
+    @Getter
+    @Setter
+    @Column(name = "active")
+    private boolean active;
+
+    @Getter
+    @Setter
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id"))
     @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
     private Set<Role> roles;
 
-    @Digits(integer = 10, fraction = 2)
-    @Column(name = "total_price")
     @Getter
     @Setter
+    @Column(name = "total_price")
+    @Min(value = 0, message = "totalPrice should not be less then 0")
     private BigDecimal totalPrice = new BigDecimal(0);
 
-    @Digits(integer = 16, fraction = 0)
-    @Column(name = "card_number")
     @Getter
     @Setter
+    @Column(name = "card_number")
+    @Digits(integer = 16, fraction = 0)
     private BigDecimal cardNumber;
 
-    @Digits(integer = 3, fraction = 0)
-    @Column(name = "cvv")
     @Getter
     @Setter
+    @Column(name = "cvv")
+    @Digits(integer = 3, fraction = 0)
     private BigDecimal cvv;
 
-    @Column(name = "is_paid")
     @Getter
     @Setter
+    @Column(name = "is_paid")
     private boolean isPaid = false;
 
-    @Column(name = "borrowed_cars")
     @Getter
     @Setter
+    @Column(name = "borrowed_cars")
+    @Min(value = 0, message = "borrowed cars number should not be less than 0")
     private int borrowedCars;
 
-    @ManyToMany(fetch = FetchType.LAZY)
     @Getter
     @Setter
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Car> cars = new ArrayList<>();
 }

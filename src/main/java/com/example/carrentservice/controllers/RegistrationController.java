@@ -4,12 +4,12 @@ import com.example.carrentservice.models.Customer;
 import com.example.carrentservice.models.Role;
 import com.example.carrentservice.services.CustomerService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.swing.*;
+import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
@@ -28,14 +28,12 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/registration")
-    public ModelAndView registration(Customer customer, Model model) {
-        Customer customerFromDb = customerService.findCustomerByFullName(customer.getFullName());
+    public ModelAndView registration(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult) {
 
-        if (customerFromDb != null) {
-            return new ModelAndView("redirect:/registration");
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("Registration");
         }
 
-        customer.setActive(true);
         customer.setRoles(Collections.singleton(Role.USER));
         customerService.save(customer);
 

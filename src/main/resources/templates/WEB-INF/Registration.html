@@ -14,21 +14,25 @@
             <form th:action="@{/registration}" method="post" name="bookPartTwoForm" th:object="${customer}">
                 <div class="form-group">
                     <label>Full name:</label>
-                    <input type="text" class="form-control" name="fullName" placeholder="Enter full name">
+                    <input type="text" class="form-control" th:field="*{fullName}" placeholder="Enter full name">
+                    <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
                     <h4 id="fullNameValidation" class="bg-danger"></h4>
                 </div>
                 <div class="form-group">
                     <label>Email:</label>
-                    <input type="email" class="form-control" name="login" placeholder="Enter email">
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="Enter email">
+                    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                     <h4 id="emailValidation" class="bg-danger"></h4>
                 </div>
                 <div class="form-group">
                     <label>Password:</label>
-                    <input type="password" class="form-control" name="password" placeholder="Enter password">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
+                    <div style="color: red"th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     <h4 id="passwordValidation" class="bg-danger"></h4>
                 </div>
 
                 <input type="hidden" name="role" value="user">
+                <input type="hidden" th:field="*{active}" th:value="${true}">
                 <button class="btn btn-success" type="submit">Next</button>
             </form>
         </div>

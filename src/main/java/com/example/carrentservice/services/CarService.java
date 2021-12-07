@@ -1,5 +1,6 @@
 package com.example.carrentservice.services;
 
+import com.example.carrentservice.models.AvailableCarsResult;
 import com.example.carrentservice.models.Car;
 import com.example.carrentservice.repository.CarDAO;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,15 @@ public class CarService {
         }
 
         return cars;
+    }
+
+    public List<Long> carsId(List<AvailableCarsResult> availableCars) {
+        List<Long> cars_id = new ArrayList<>();
+        for (int i = 0; i < availableCars.size(); i++) {
+            cars_id.add(availableCars.get(i).getId());
+        }
+
+        return cars_id;
     }
     
     public Optional<Car> findById(Long id) {

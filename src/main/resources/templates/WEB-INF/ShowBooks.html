@@ -27,7 +27,7 @@
                         <form th:action="@{/customer/book(book_id=${d.date.id})}" method="post">
                             <input type="submit" value="Delete">
                         </form>
-<!--                        <a href="#" class="btn btn-default" th:href="@{/carDetail(car_id=${p.id})}">More Info</a>-->
+                        <a href="#" class="btn btn-default" th:href="@{/customer/book/edit(book_id=${d.date.id})}">Edit</a>
                     </p>
                 </div>
             </div>

@@ -4,7 +4,9 @@ import com.example.carrentservice.models.Customer;
 import com.example.carrentservice.repository.CustomerDAO;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService{
@@ -15,9 +17,13 @@ public class CustomerService{
         this.customerDAO = customerDAO;
     }
 
-    
     public Customer findById(Long id) {
         return customerDAO.findById(id).get();
+    }
+
+    public Customer findByEmail(String email) {
+        Optional<Customer> customer = customerDAO.findByEmail(email);
+        return customer.isEmpty() ? null : customer.get();
     }
 
     

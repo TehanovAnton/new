@@ -29,6 +29,8 @@ public class BorrowedDateService{
         return borrowedDateDAO.findByCustomerId(id);
     }
 
+    public BorrowedDate findById(Long bookId) { return borrowedDateDAO.findById(bookId).get(); }
+
     
     public BorrowedDate findByCarId(Long id) {
         return borrowedDateDAO.findByCarId(id);
