@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: head"></head>
+
+<body>
+<nav th:replace="layout :: nav"></nav>
+<div class="container">
+  <hr>
+  <div class="container">
+    <h3>Check availability:</h3>
+
+    <form th:action="@{/book/update(book_id=${borrowedDate.id})}" method="post" name="bookPartOneForm" onsubmit="return validateForm()">
+      <div class="row">
+
+        <div class="col-sm-4">
+          <input type="date"
+                 class="form-control" name="start_date"
+                 th:value="${start_date}" placeholder="Pick start date"><br><br>
+          <h4 id="startDateValidation"
+              class="bg-danger"></h4>
+        </div>
+        <div class="col-sm-4">
+          <input type="date" class="form-control"
+                 th:value="${end_date}" name="end_date"
+                 placeholder="Pick end date"><br><br>
+          <h4 id="endDateValidation"
+              class="bg-danger"></h4>
+        </div>
+        <div class="col-sm-4">
+          <button class="btn btn-success"
+                  type="submit">Check</button>
+        </div>
+      </div>
+
+      <div class="row text-center">
+      <div class="col-md-3 col-sm-6 hero-feature">
+        <div class="thumbnail">
+          <img th:src="@{'/img/'+${car.name}+'.png'}" />
+          <div class="caption">
+            <h3 th:text="${car.name}"></h3>
+            <p th:text="${borrowedDate.startDateFormatted()}"></p>
+            <p th:text="${borrowedDate.endDateFormatted()}"></p>
+            <p>
+              <label>Chose</label>
+              <input type="radio" name="car_id" th:value="${borrowedDate.car.id}" checked="checked">
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 hero-feature" th:each="p : ${availableCars}">
+        <div class="thumbnail">
+          <img th:src="@{'/img/'+${p.carName}+'.png'}" />
+          <div class="caption">
+            <h3 th:text="${p.carName}"></h3>
+            <p th:text="${start_date}"></p>
+            <p th:text="${end_date}+ ' EUR / day'"></p>
+            <p>
+              <label>Chose</label>
+              <input type="radio" name="car_id" th:value="${p.id}">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+
+  </div>
+  <hr>
+  <footer th:replace="layout :: footer"></footer>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- Hide div when url contains some word -->
+<script type="text/javascript">
+  if (window.location.href.indexOf("date") != -1) {
+    $("#checkAvailability").show();
+  }
+  else {
+    $("#checkAvailability").hide();
+  }
+</script>
+<script>
+  function validateForm() {
+    var startDate = document.bookPartOneForm.start_date.value;
+    var endDate = document.bookPartOneForm.end_date.value;
+    var dateStart = new Date(startDate);
+    var dateCurrent = new Date();
+
+    if (startDate == null || startDate == "") {
+      document.getElementById("startDateValidation").innerHTML = "Start date can't be blank";
+      return false;
+    }
+    else if (dateStart < dateCurrent) {
+      document.getElementById("startDateValidation").innerHTML = "Start date must be since tomorrow";
+      return false;
+    }
+    else if (endDate == null || endDate == "") {
+      document.getElementById("endDateValidation").innerHTML = "End date can't be blank";
+      return false;
+    }
+    else if (endDate < startDate) {
+      document.getElementById("endDateValidation").innerHTML = "End date must be bigger than start date";
+      return false;
+    }
+  }
+</script>
+</body>
+
+</html>
