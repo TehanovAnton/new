@@ -10,9 +10,8 @@
   <div class="container">
     <h3>Check availability:</h3>
 
-    <form th:action="@{/book/update(book_id=${borrowedDate.id})}" method="post" name="bookPartOneForm" onsubmit="return validateForm()">
+    <form th:action="@{/check_dates(book_id=${borrowedDate.id})}" method="post" name="bookPartOneForm" onsubmit="return validateForm()">
       <div class="row">
-
         <div class="col-sm-4">
           <input type="date"
                  class="form-control" name="start_date"
@@ -32,38 +31,41 @@
                   type="submit">Check</button>
         </div>
       </div>
+    </form>
+
+    <form th:action="@{/book/update(book_id=${borrowedDate.id})}" method="post">
+      <input type="hidden" name="start_date" th:value="${start_date}">
+      <input type="hidden" name="end_date" th:value="${end_date}">
 
       <div class="row text-center">
-      <div class="col-md-3 col-sm-6 hero-feature">
-        <div class="thumbnail">
-          <img th:src="@{'/img/'+${car.name}+'.png'}" />
-          <div class="caption">
-            <h3 th:text="${car.name}"></h3>
-            <p th:text="${borrowedDate.startDateFormatted()}"></p>
-            <p th:text="${borrowedDate.endDateFormatted()}"></p>
-            <p>
-              <label>Chose</label>
-              <input type="radio" name="car_id" th:value="${borrowedDate.car.id}" checked="checked">
-            </p>
+        <div class="col-md-3 col-sm-6 hero-feature">
+          <div class="thumbnail">
+            <img th:src="@{'/img/'+${car.name}+'.png'}" />
+            <div class="caption">
+              <h3 th:text="${car.name}"></h3>
+              <p>
+                <label>Chose</label>
+                <input type="radio" name="car_id" th:value="${borrowedDate.car.id}" checked="checked">
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-3 col-sm-6 hero-feature" th:each="p : ${availableCars}">
-        <div class="thumbnail">
-          <img th:src="@{'/img/'+${p.carName}+'.png'}" />
-          <div class="caption">
-            <h3 th:text="${p.carName}"></h3>
-            <p th:text="${start_date}"></p>
-            <p th:text="${end_date}+ ' EUR / day'"></p>
-            <p>
-              <label>Chose</label>
-              <input type="radio" name="car_id" th:value="${p.id}">
-            </p>
+        <div class="col-md-3 col-sm-6 hero-feature" th:each="p : ${availableCars}">
+          <div class="thumbnail">
+            <img th:src="@{'/img/'+${p.carName}+'.png'}" />
+            <div class="caption">
+              <h3 th:text="${p.carName}"></h3>
+              <p>
+                <label>Chose</label>
+                <input type="radio" name="car_id" th:value="${p.carId}">
+              </p>
+            </div>
           </div>
         </div>
+
+        <input type="submit" value="Update">
       </div>
-    </div>
     </form>
 
   </div>
