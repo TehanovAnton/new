@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "borrowed_date")
@@ -62,5 +63,18 @@ public class BorrowedDate implements Serializable {
     public String endDateFormatted() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(endDate.getTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BorrowedDate that = (BorrowedDate) o;
+        return Objects.equals(id, that.id) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(car, that.car) && Objects.equals(customer, that.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDate, endDate, car, customer);
     }
 }

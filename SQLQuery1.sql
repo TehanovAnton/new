@@ -1,11 +1,11 @@
 use CarRentService
 
-select * from car;
+-- select * from car;
 
 delete from borrowed_date
 delete from customer_cars
-delete from customer_role
 delete from car
+delete from customer_role
 delete from customer
 
 drop table borrowed_date
@@ -18,9 +18,9 @@ update car set id = 1 where id = 2;
 update customer set customer_id = 0 where customer_id = 1;
 
 insert into car (id, description, name, price)
-values (1, 'auto', 'auto2', 100)
+values (0, 'auto', 'auto2', 100)
 insert into car (id, description, name, price)
-values (2, 'auto', 'auto3', 100)
+values (1, 'auto', 'auto3', 100)
 
 select * from car 
 select * from borrowed_date

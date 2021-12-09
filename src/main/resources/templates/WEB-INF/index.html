@@ -19,12 +19,10 @@
             <form>
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="date" class="form-control" name="start_date"
-                               th:value="${start_date}" placeholder="Pick start date"><br><br>
+                        <input type="date" class="form-control" name="start_date" placeholder="Pick start date"><br><br>
                     </div>
                     <div class="col-sm-4">
-                        <input type="date" class="form-control" name="end_date"
-                               th:value="${end_date}" placeholder="Pick end date"><br><br>
+                        <input type="date" class="form-control" name="end_date" placeholder="Pick end date"><br><br>
                     </div>
                     <div class="col-sm-4">
                         <button class="btn btn-success" type="submit">Submit</button>
@@ -42,8 +40,8 @@
                         <p th:text="${p.carDescription}"></p>
                         <p th:text="${p.carPrice}+ ' EUR / day'"></p>
                         <p>
-                            <a href="#" class="btn btn-primary" th:href="@{/bookPartOne(car_id=${p.id})}">Book Now!</a>
-                            <a href="#" class="btn btn-default" th:href="@{/carDetail(car_id=${p.id})}">More Info</a>
+                            <a href="#" class="btn btn-primary" th:href="@{/bookPartOne(car_id=${p.carId})}">Book Now!</a>
+                            <a href="#" class="btn btn-default" th:href="@{/carDetail(car_id=${p.carId})}">More Info</a>
                         </p>
                     </div>
                 </div>

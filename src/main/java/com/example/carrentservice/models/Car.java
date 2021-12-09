@@ -21,6 +21,12 @@ public class Car implements Serializable {
         super();
     }
 
+    public Car(String name, String description, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,4 +62,8 @@ public class Car implements Serializable {
     @Getter
     @Setter
     private List<BorrowedDate> borrowedDates = new ArrayList<>();
+
+    public CarJson carJsonObj() {
+        return new CarJson(name, description, price);
+    }
 }
