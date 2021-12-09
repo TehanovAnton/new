@@ -7,6 +7,7 @@ import com.example.carrentservice.services.CustomerService;
 import com.example.carrentservice.services.MailService;
 import it.ozimov.springboot.mail.configuration.EnableEmailTools;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -23,7 +24,6 @@ import java.util.List;
 @RequestMapping
 @SessionAttributes({ "customer", "borrowedDate" })
 public class BorrowedDateController {
-
     private CarService carService;
     private BorrowedDateService borrowedDateService;
     private CustomerService customerService;
@@ -39,14 +39,14 @@ public class BorrowedDateController {
         this.mailService = mailService;
     }
 
-    @GetMapping(value = "/customer/books")
-    public ModelAndView showBooks(Model model) {
+    @GetMapping(value = "/borrowedDates")
+    public ModelAndView borrowedDates(Model model) {
         if (customer == null)
             customer = customerService.findCustomerByActive(true);
 
         List<Car> customerBorrowedCars = carService.findAllByCustomerId(customer.getId());
         List<BorrowedDate> customerBorrowedDates = borrowedDateService.findAllByCustomerId(customer.getId());
-        List<ShowBorrowedDate> dates = showCustomerBooks(customerBorrowedDates, customerBorrowedCars);
+        List<ShowBorrowedDate> dates = showCustomerBorrowedDates(customerBorrowedDates, customerBorrowedCars);
 
         model.addAttribute("borrowedDates", dates);
         return new ModelAndView("ShowBooks");
@@ -56,11 +56,11 @@ public class BorrowedDateController {
     public ModelAndView delete(Model model,
                                @RequestParam("book_id") Long bookId) {
         borrowedDateService.deleteById(bookId);
-        return new ModelAndView("redirect:/customer/books");
+        return new ModelAndView("redirect:/borrowedDates");
     }
 
     @GetMapping(value = "/customer/book/edit{book_id}")
-    public ModelAndView editBookPage(Model model,
+    public String editBorrowedDatePage(Model model,
                                      @RequestParam(value="start_date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")
                                                  String start_date,
                                      @RequestParam(value="end_date",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -81,12 +81,12 @@ public class BorrowedDateController {
         model.addAttribute("availableCars", carsByDates);
         model.addAttribute("car", car);
 
-        return new ModelAndView("EditBook");
+        return "EditBorrowedDate";
     }
 
 
     @PostMapping(value="/book/update")
-    public ModelAndView editBook(Model model,
+    public String editBorrowedDate(Model model,
                                     @RequestParam(value="car_id")
                                             Long carId,
                                     @RequestParam(value="start_date") @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -101,22 +101,22 @@ public class BorrowedDateController {
         borrowedDate.setCar(carService.findById(carId).get());
         borrowedDateService.save(borrowedDate);
 
-        return new ModelAndView("redirect:/customer/books");
+        return "redirect:/customer/books";
     }
 
 
     @PostMapping(value = "/check_dates")
-    public ModelAndView check_dates(Model model,
+    public String check_dates(Model model,
                                     @RequestParam(value = "book_id") Long book_id,
                                     @RequestParam(value = "start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar startDate,
                                     @RequestParam(value = "end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar endDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return new ModelAndView("redirect:/customer/book/edit?book_id=" + book_id +
-                "&start_date=" + format.format(startDate.getTime()) + "&end_date=" + format.format(endDate.getTime()));
+        return "redirect:/customer/book/edit?book_id=" + book_id +
+                "&start_date=" + format.format(startDate.getTime()) + "&end_date=" + format.format(endDate.getTime());
     }
 
 
-    private List<ShowBorrowedDate> showCustomerBooks(List<BorrowedDate> customerBorrowedDates, List<Car> customerBorrowedCars) {
+    private List<ShowBorrowedDate> showCustomerBorrowedDates(List<BorrowedDate> customerBorrowedDates, List<Car> customerBorrowedCars) {
         List<ShowBorrowedDate> dates = new ArrayList<ShowBorrowedDate>();
         for (int i = 0; i < customerBorrowedCars.size(); i++) {
             dates.add(new ShowBorrowedDate(customerBorrowedDates.get(i), customerBorrowedCars.get(i)));
@@ -134,20 +134,20 @@ public class BorrowedDateController {
         carById = carService.findById(carId).get();
         List<AvailableCarsResult> availableCarById = borrowedDateService.checkAvailableCarById(startDate, endDate, carId);
 
-        
+
         model.addAttribute("carById", carById);
         model.addAttribute("availableCarById", availableCarById);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("start_date", format.format(startDate.getTime()));
         model.addAttribute("end_date", format.format(endDate.getTime()));
-        
+
         return new ModelAndView("bookPartOne");
     }
 
 
     @PostMapping(value = "/bookPartOne")
-    public ModelAndView createNewCustomer(Model model,
+    public String createNewCustomer(Model model,
                                           @RequestParam(value = "start_date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar startDate,
                                           @RequestParam(value = "end_date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Calendar endDate,
                                           @RequestParam(value = "car_id") Long carId) {
@@ -163,20 +163,19 @@ public class BorrowedDateController {
         model.addAttribute("customer", customer);
         model.addAttribute("borrowedDate", borrowedDate);
 
-        String url = "redirect:/bookPartTwo?car_id=" + carId.toString();
-        return new ModelAndView(url);
+        return "redirect:/bookPartTwo?car_id=" + carId.toString();
     }
 
     @GetMapping(value = "bookPartTwo{car_id}")
-    public ModelAndView showSessionCar(Model model, BorrowedDate borrowedDate) {
+    public String showSessionCar(Model model, BorrowedDate borrowedDate) {
         model.addAttribute("carById", carById);
         model.addAttribute("customer", customer);
         model.addAttribute("borrowedDate", borrowedDate);
-        return new ModelAndView("bookPartTwo");
+        return "bookPartTwo";
     }
 
     @PostMapping(value = "bookPartTwo")
-    public ModelAndView realizePayment(Model model,
+    public String realizePayment(Model model,
                                        BorrowedDate borrowedDate,
                                        @RequestParam(value = "car_id") Long carId,
                                        @RequestParam(value = "cardNumber") String cardNumber,
@@ -186,8 +185,7 @@ public class BorrowedDateController {
         initCustomer(customer, new BigDecimal(cardNumber), new BigDecimal(cvv), days);
 
         model.addAttribute("car_id", carId);
-        String url = "redirect:/bookResume?car_id=" + carId;
-        return new ModelAndView(url);
+        return "redirect:/bookResume?car_id=" + carId;
     }
 
     @GetMapping(value = "bookResume{car_id}")
@@ -199,11 +197,11 @@ public class BorrowedDateController {
     }
 
     @PostMapping(value = "bookResume")
-    public ModelAndView completeAll(SessionStatus status, BorrowedDate borrowedDate) {
+    public String completeAll(SessionStatus status, BorrowedDate borrowedDate) {
         borrowedDateService.save(borrowedDate);
         mailService.sendMail(customer, borrowedDate, carById);
         status.setComplete();
-        return new ModelAndView("redirect:/");
+        return "redirect:/";
     }
 
     private void initCustomer(Customer customer, BigDecimal cardNumber, BigDecimal cvv, long days) {

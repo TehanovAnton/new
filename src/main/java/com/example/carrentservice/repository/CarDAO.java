@@ -23,4 +23,8 @@ public interface CarDAO extends JpaRepository<Car, Long> {
     List<Long> findAllByCustomerId(@Param("customer_id") Long customer_id);
 
     Optional<Car> findById(Long id);
+
+    Optional<Car> findByName(String name);
+
+    void deleteById(Long id);
 }

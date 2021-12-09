@@ -42,6 +42,12 @@ public class CarService {
         return cars;
     }
 
+    public Car deleteById(Long id) {
+        Car car = carDAO.findById(id).get();
+        carDAO.deleteById(id);
+        return car;
+    }
+
     public List<Long> carsId(List<AvailableCarsResult> availableCars) {
         List<Long> cars_id = new ArrayList<>();
         for (int i = 0; i < availableCars.size(); i++) {

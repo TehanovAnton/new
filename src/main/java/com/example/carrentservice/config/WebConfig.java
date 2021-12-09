@@ -30,6 +30,7 @@ public class WebConfig implements WebMvcConfigurer
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
+
     @Bean
     public SpringTemplateEngine templateEngine() {
         var templateEngine = new SpringTemplateEngine();
